@@ -70,7 +70,37 @@
     });
 })();
 </script>
+  <button id="reset" style="display:none">Reset contador</button>
+<script>
+  (function () {
+    const NAMESPACE = 'engpado.github.io/trevo4folhas';
+    const KEY = (location.pathname.replace(/^\/+/, '').replace(/\W+/g, '_') || 'index');
+
+    const btn = document.getElementById('reset');
+    if (!btn) return;
+
+    btn.addEventListener('click', async () => {
+      try {
+        const url = `https://api.countapi.xyz/set/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(KEY)}?value=0`;
+        const r = await fetch(url, { cache: 'no-store' });
+        const d = await r.json();
+        const el = document.getElementById('visitas');
+        if (el) el.textContent = (d.value || 0).toLocaleString('pt-BR');
+        alert('Contador zerado!');
+      } catch (e) {
+        alert('Falha ao zerar: ' + e);
+      }
+    });
+
+    // deixe o botão visível só para você (ex.: após digitar um atalho)
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === '0') btn.style.display = 'inline-block';
+    });
+  })();
+</script>
+
 </body></html>
+
 
 
 
